@@ -4,7 +4,12 @@ __v0_devtools.tsx
 __v0_jsx-dev-runtime.ts
 
 # Common ignores
-node_modules
+node_modules/
 .next/
 .env*.local
 .DS_Store
+
+# VXStudio pack workflow
+.pack_backups/
+incoming_packs/
+packs/

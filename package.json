@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "pack:create": "node tool/create_pack.mjs",
+    "pack:apply": "node tool/apply_pack.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

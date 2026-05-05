@@ -1,16 +1,27 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Menu, X, Sun, Moon } from "lucide-react"
+import { useEffect, useState } from "react"
+import {
+  BadgeDollarSign,
+  BriefcaseBusiness,
+  Home,
+  Layers3,
+  Menu,
+  Moon,
+  Route,
+  Sparkles,
+  Sun,
+  X,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navLinks = [
-  { label: "Início", href: "#" },
-  { label: "Diferencial", href: "#diferencial" },
-  { label: "O que fazemos", href: "#servicos" },
-  { label: "Exemplos", href: "#exemplos" },
-  { label: "Como funciona", href: "#como-funciona" },
-  { label: "Investimento", href: "#investimento" },
+  { label: "Início", href: "#", icon: Home },
+  { label: "Diferencial", href: "#diferencial", icon: Sparkles },
+  { label: "O que fazemos", href: "#servicos", icon: BriefcaseBusiness },
+  { label: "Exemplos", href: "#exemplos", icon: Layers3 },
+  { label: "Como funciona", href: "#como-funciona", icon: Route },
+  { label: "Investimento", href: "#investimento", icon: BadgeDollarSign },
 ]
 
 export function Header() {
@@ -35,79 +46,83 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border/50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-18">
-          {/* Logo */}
-          <a href="#" className="text-xl font-bold text-foreground tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">VX</span>Studio
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between lg:h-18">
+          <a href="#" className="text-xl font-extrabold tracking-tight text-foreground" aria-label="Voltar para o início">
+            <span className="text-primary">VX</span>Studio
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+          <nav className="hidden items-center gap-5 lg:flex">
+            {navLinks.map((link) => {
+              const Icon = link.icon
+
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="group/nav relative inline-flex items-center gap-2 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                >
+                  <Icon className="h-4 w-4 text-primary/75 transition-all duration-200 group-hover/nav:-translate-y-0.5 group-hover/nav:text-primary" />
+                  <span>{link.label}</span>
+                  <span className="absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-chart-2 to-chart-3 transition-transform duration-300 ease-out group-hover/nav:scale-x-100" />
+                </a>
+              )
+            })}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-3">
-            {/* Theme Toggle */}
+          <div className="hidden items-center gap-3 lg:flex">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all duration-200"
+              className="rounded-full border border-border/70 bg-secondary/70 p-2 text-muted-foreground shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent hover:text-accent-foreground"
               aria-label={theme === "light" ? "Ativar modo escuro" : "Ativar modo claro"}
             >
-              {mounted && (theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />)}
+              {mounted && (theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />)}
             </button>
-            
-            <Button asChild className="shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-200">
+
+            <Button asChild className="shadow-md shadow-primary/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25">
               <a href="#contato">Pedir orçamento</a>
             </Button>
           </div>
 
-          {/* Mobile Actions */}
-          <div className="flex lg:hidden items-center gap-2">
-            {/* Theme Toggle Mobile */}
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all duration-200"
+              className="rounded-full border border-border/70 bg-secondary/70 p-2 text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground"
               aria-label={theme === "light" ? "Ativar modo escuro" : "Ativar modo claro"}
             >
-              {mounted && (theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />)}
+              {mounted && (theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />)}
             </button>
-            
-            {/* Mobile Menu Button */}
+
             <button
-              className="p-2 -mr-2 text-foreground"
+              className="-mr-2 p-2 text-foreground"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border/50">
-            <nav className="flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
+          <div className="lg:hidden border-t border-border/60 py-4">
+            <nav className="flex flex-col gap-2">
+              {navLinks.map((link) => {
+                const Icon = link.icon
+
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="group/nav relative inline-flex w-fit items-center gap-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Icon className="h-4 w-4 text-primary/80 transition-all group-hover/nav:text-primary" />
+                    <span>{link.label}</span>
+                    <span className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-chart-2 to-chart-3 transition-transform duration-300 ease-out group-hover/nav:scale-x-100" />
+                  </a>
+                )
+              })}
               <Button asChild className="mt-3 shadow-md shadow-primary/20">
                 <a href="#contato" onClick={() => setMobileMenuOpen(false)}>
                   Pedir orçamento
