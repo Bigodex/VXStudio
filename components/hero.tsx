@@ -11,13 +11,12 @@ import {
   MessageCircle,
   Palette,
   RadioTower,
-  Smartphone,
   Target,
   TrendingUp,
   Users,
-  Zap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { MatrixBackground } from "@/components/matrix-background"
 
 const headlineWords = ["Páginas", "únicas", "para", "marcas", "que", "querem", "ser", "lembradas."]
 
@@ -118,11 +117,7 @@ export function Hero() {
       ref={heroRef}
       className="relative isolate overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-14 lg:min-h-[calc(100vh-4.75rem)] lg:pt-28 lg:pb-10"
     >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_18%,color-mix(in_oklch,var(--primary)_17%,transparent),transparent_32%),radial-gradient(circle_at_78%_34%,rgba(255,191,0,0.18),transparent_30%),linear-gradient(to_bottom,var(--background),color-mix(in_oklch,var(--muted)_42%,var(--background)))]" />
-
-      <div className="pointer-events-none absolute left-1/2 top-16 -z-10 h-[25rem] w-[25rem] -translate-x-1/2 rounded-full bg-[#ffbf00]/18 blur-[100px] animate-vx-ambient-glow" />
-      <div className="pointer-events-none absolute right-[7%] top-24 -z-10 h-72 w-72 rounded-full bg-primary/18 blur-3xl animate-vx-orbit-glow" />
-      <div className="pointer-events-none absolute left-[4%] bottom-24 -z-10 h-56 w-56 rounded-full bg-chart-2/12 blur-3xl animate-vx-orbit-glow animation-delay-300" />
+      <MatrixBackground className="-z-10" fontSize={18} speed={1.12} maxFps={42} density={1.04} opacity={0.42} />
       <div className="absolute left-1/2 top-16 h-px w-[72vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/45 to-transparent animate-line-draw" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -152,7 +147,7 @@ export function Hero() {
                 })}
               </h1>
 
-              <p ref={subtitleRef} className="max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+              <p ref={subtitleRef} className="max-w-xl text-base leading-7 text-neutral-700 sm:text-lg sm:leading-8 dark:text-muted-foreground">
                 A VXStudio cria páginas personalizadas, modernas e vivas para negócios, marcas pessoais, produtos e
                 serviços que precisam divulgar, vender e impressionar com uma experiência digital de verdade.
               </p>
@@ -192,7 +187,7 @@ export function Hero() {
 
           <div
             ref={mockupRef}
-            className="relative flex justify-center opacity-100 lg:-mt-2 lg:justify-end xl:-mt-4"
+            className="relative flex justify-center opacity-100 lg:-mt-10 lg:justify-end xl:-mt-0"
             onMouseMove={handleMockupMove}
             onMouseLeave={() => setParallax({ x: 0, y: 0 })}
           >
