@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-  weight: ['400', '500', '600', '700', '800']
-});
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist',
+})
 
 export const metadata: Metadata = {
   title: 'VXStudio | Landing Pages Únicas para Marcas que Querem Ser Lembradas',
@@ -39,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="bg-background scroll-smooth" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${geist.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   BadgeDollarSign,
   BriefcaseBusiness,
@@ -11,8 +11,10 @@ import {
   Route,
   Sparkles,
   Sun,
+  WandSparkles,
   X,
 } from "lucide-react"
+import gsap from "gsap"
 import { Button } from "@/components/ui/button"
 
 const navLinks = [
@@ -25,6 +27,7 @@ const navLinks = [
 ]
 
 export function Header() {
+  const headerRef = useRef<HTMLElement | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [theme, setTheme] = useState<"light" | "dark">("light")
   const [mounted, setMounted] = useState(false)
@@ -38,6 +41,20 @@ export function Header() {
     document.documentElement.classList.toggle("dark", initialTheme === "dark")
   }, [])
 
+  useEffect(() => {
+    if (!headerRef.current) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { y: -18, opacity: 0, filter: "blur(10px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out", delay: 0.15 },
+      )
+    }, headerRef)
+
+    return () => ctx.revert()
+  }, [])
+
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light"
     setTheme(newTheme)
@@ -46,14 +63,27 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
+    <header
+      ref={headerRef}
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-background/72 opacity-0 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl supports-[backdrop-filter]:bg-background/62"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between lg:h-18">
-          <a href="#" className="text-xl font-extrabold tracking-tight text-foreground" aria-label="Voltar para o início">
-            <span className="text-primary">VX</span>Studio
+        <div className="flex h-16 items-center justify-between lg:h-[4.75rem]">
+          <a
+            href="#"
+            className="group/logo inline-flex items-center gap-3 text-xl font-black tracking-tight text-foreground"
+            aria-label="Voltar para o início"
+          >
+            <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/95 via-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/20 transition-transform duration-300 group-hover/logo:-rotate-3 group-hover/logo:scale-105">
+              <span className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.42),transparent_38%)]" />
+              <WandSparkles className="relative h-5 w-5" />
+            </span>
+            <span className="font-[family-name:var(--font-editorial)] text-[1.35rem] tracking-[-0.045em]">
+              <span className="text-primary">VX</span>Studio
+            </span>
           </a>
 
-          <nav className="hidden items-center gap-5 lg:flex">
+          <nav className="hidden items-center gap-1.5 lg:flex">
             {navLinks.map((link) => {
               const Icon = link.icon
 
@@ -61,11 +91,12 @@ export function Header() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="group/nav relative inline-flex items-center gap-2 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  className="group/nav relative inline-flex w-fit items-center gap-2 overflow-hidden rounded-full px-3 py-2 text-sm font-semibold tracking-[-0.02em] text-muted-foreground transition-colors duration-300 hover:text-foreground"
                 >
-                  <Icon className="h-4 w-4 text-primary/75 transition-all duration-200 group-hover/nav:-translate-y-0.5 group-hover/nav:text-primary" />
-                  <span>{link.label}</span>
-                  <span className="absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-chart-2 to-chart-3 transition-transform duration-300 ease-out group-hover/nav:scale-x-100" />
+                  <span className="absolute inset-0 rounded-full bg-primary/0 transition-colors duration-300 group-hover/nav:bg-primary/[0.07]" />
+                  <Icon className="relative h-4 w-4 text-primary/75 transition-all duration-300 group-hover/nav:-translate-y-0.5 group-hover/nav:scale-110 group-hover/nav:text-primary" />
+                  <span className="relative">{link.label}</span>
+                  <span className="absolute bottom-1 left-3 right-3 h-px origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-[#ffbf00] to-chart-2 transition-transform duration-500 ease-out group-hover/nav:scale-x-100" />
                 </a>
               )
             })}
@@ -74,13 +105,22 @@ export function Header() {
           <div className="hidden items-center gap-3 lg:flex">
             <button
               onClick={toggleTheme}
-              className="rounded-full border border-border/70 bg-secondary/70 p-2 text-muted-foreground shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent hover:text-accent-foreground"
+              className="group/theme relative grid h-10 w-10 place-items-center overflow-hidden rounded-full border border-border/70 bg-card/60 text-muted-foreground shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-foreground hover:shadow-lg hover:shadow-primary/15"
               aria-label={theme === "light" ? "Ativar modo escuro" : "Ativar modo claro"}
             >
-              {mounted && (theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />)}
+              <span className="absolute inset-0 bg-gradient-to-br from-primary/10 to-chart-2/10 opacity-0 transition-opacity duration-300 group-hover/theme:opacity-100" />
+              {mounted &&
+                (theme === "light" ? (
+                  <Moon className="relative h-5 w-5" />
+                ) : (
+                  <Sun className="relative h-5 w-5 text-primary" />
+                ))}
             </button>
 
-            <Button asChild className="shadow-md shadow-primary/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25">
+            <Button
+              asChild
+              className="rounded-full px-5 font-bold tracking-[-0.02em] shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+            >
               <a href="#contato">Pedir orçamento</a>
             </Button>
           </div>
@@ -88,14 +128,14 @@ export function Header() {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={toggleTheme}
-              className="rounded-full border border-border/70 bg-secondary/70 p-2 text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground"
+              className="grid h-10 w-10 place-items-center rounded-full border border-border/70 bg-card/70 text-muted-foreground backdrop-blur-xl transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
               aria-label={theme === "light" ? "Ativar modo escuro" : "Ativar modo claro"}
             >
-              {mounted && (theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />)}
+              {mounted && (theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5 text-primary" />)}
             </button>
 
             <button
-              className="-mr-2 p-2 text-foreground"
+              className="-mr-2 grid h-10 w-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
@@ -105,8 +145,8 @@ export function Header() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-border/60 py-4">
-            <nav className="flex flex-col gap-2">
+          <div className="border-t border-border/60 py-4 lg:hidden">
+            <nav className="grid gap-2">
               {navLinks.map((link) => {
                 const Icon = link.icon
 
@@ -114,16 +154,16 @@ export function Header() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="group/nav relative inline-flex w-fit items-center gap-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    className="group/nav relative inline-flex w-fit items-center gap-2 overflow-hidden rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <Icon className="h-4 w-4 text-primary/80 transition-all group-hover/nav:text-primary" />
+                    <Icon className="h-4 w-4 text-primary/80 transition-transform group-hover/nav:-translate-y-0.5" />
                     <span>{link.label}</span>
-                    <span className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-chart-2 to-chart-3 transition-transform duration-300 ease-out group-hover/nav:scale-x-100" />
+                    <span className="absolute bottom-1 left-3 right-3 h-px origin-left scale-x-0 rounded-full bg-gradient-to-r from-primary via-[#ffbf00] to-chart-2 transition-transform duration-500 ease-out group-hover/nav:scale-x-100" />
                   </a>
                 )
               })}
-              <Button asChild className="mt-3 shadow-md shadow-primary/20">
+              <Button asChild className="mt-3 rounded-full shadow-md shadow-primary/20">
                 <a href="#contato" onClick={() => setMobileMenuOpen(false)}>
                   Pedir orçamento
                 </a>
