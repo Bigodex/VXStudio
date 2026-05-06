@@ -395,3 +395,177 @@
     will-change: auto;
   }
 }
+@keyframes vx-story-aura-drift {
+  0%, 100% { transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1); opacity: 0.58; }
+  50% { transform: translate3d(-48%, -53%, 0) rotate(7deg) scale(1.06); opacity: 0.82; }
+}
+
+@keyframes vx-story-particle-float {
+  0% { transform: translate3d(0, 18px, 0); opacity: 0; }
+  20%, 70% { opacity: 0.65; }
+  100% { transform: translate3d(28px, -86px, 0); opacity: 0; }
+}
+
+@keyframes vx-story-browser-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(-2deg); }
+  50% { transform: translate3d(0, -10px, 0) rotateX(1deg) rotateY(1deg); }
+}
+
+@keyframes vx-story-tag-orbit {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(10px, -12px, 0); }
+}
+
+.vx-story-section {
+  isolation: isolate;
+  margin-top: -1px;
+}
+
+.vx-story-bridge {
+  position: absolute;
+  inset: -120px 0 auto;
+  height: 240px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 24% 0%, rgba(245, 158, 11, 0.16), transparent 34%),
+    radial-gradient(circle at 72% 12%, rgba(59, 130, 246, 0.10), transparent 32%),
+    linear-gradient(to bottom, rgba(15, 15, 15, 0), var(--background) 62%);
+  filter: blur(0.2px);
+  z-index: 1;
+}
+
+.vx-story-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 18% 35%, rgba(245,158,11,0.12), transparent 32%),
+    radial-gradient(circle at 84% 28%, rgba(139,92,246,0.15), transparent 38%),
+    radial-gradient(circle at 52% 95%, rgba(59,130,246,0.08), transparent 30%);
+  background-size: 72px 72px, 72px 72px, auto, auto, auto;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  opacity: 0.72;
+  z-index: 0;
+}
+
+.vx-story-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.vx-story-particles span {
+  --particle-index: 1;
+  position: absolute;
+  left: calc((var(--particle-index) * 5.4%) + 2%);
+  top: calc(22% + ((var(--particle-index) % 6) * 11%));
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.72);
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+  animation: vx-story-particle-float calc(8s + (var(--particle-index) * 0.38s)) ease-in-out infinite;
+  animation-delay: calc(var(--particle-index) * -0.6s);
+}
+
+.vx-story-aura {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(760px, 120vw);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 36% 40%, rgba(245,158,11,0.35), transparent 28%),
+    radial-gradient(circle at 70% 58%, rgba(139,92,246,0.34), transparent 32%),
+    radial-gradient(circle, rgba(255,255,255,0.08), transparent 58%);
+  filter: blur(46px);
+  animation: vx-story-aura-drift 12s ease-in-out infinite;
+  z-index: -1;
+}
+
+.vx-story-browser {
+  transform-style: preserve-3d;
+  animation: vx-story-browser-float 9s ease-in-out infinite;
+}
+
+.vx-story-browser::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.42), rgba(255,255,255,0.08), rgba(139,92,246,0.32));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+.vx-story-browser-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 54px 54px;
+  opacity: 0.32;
+  mask-image: radial-gradient(circle at 50% 40%, black, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black, transparent 78%);
+}
+
+.vx-story-orbit-tag {
+  position: absolute;
+  z-index: 20;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.075);
+  box-shadow: 0 18px 52px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  border-radius: 999px;
+  padding: 0.68rem 1rem;
+  color: rgba(255,255,255,0.72);
+  font-size: 0.75rem;
+  font-weight: 700;
+  animation: vx-story-tag-orbit 7s ease-in-out infinite;
+}
+
+.vx-story-orbit-tag-1 { right: -0.5rem; top: 10%; animation-delay: -1s; }
+.vx-story-orbit-tag-2 { left: -1.25rem; bottom: 22%; animation-delay: -2.2s; }
+.vx-story-orbit-tag-3 { right: 8%; bottom: -0.75rem; animation-delay: -3.4s; }
+.vx-story-orbit-tag-4 { left: 8%; top: -0.75rem; animation-delay: -4.6s; }
+
+@media (max-width: 1024px) {
+  .vx-story-orbit-tag {
+    display: none;
+  }
+
+  .vx-story-browser {
+    animation-duration: 12s;
+  }
+}
+
+@media (max-width: 640px) {
+  .vx-story-section {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .vx-story-browser {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-story-aura,
+  .vx-story-particles span,
+  .vx-story-browser,
+  .vx-story-orbit-tag {
+    animation: none !important;
+  }
+}
